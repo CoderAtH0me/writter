@@ -45,7 +45,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     disabled,
     accept: {
       "image/jpeg": [],
-      "iamge/png": [],
+      "image/png": [],
     },
   });
 
