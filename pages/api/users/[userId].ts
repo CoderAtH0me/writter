@@ -22,6 +22,14 @@ export default async function handler(
       },
     });
 
+    const followers = await prisma.user.findMany({
+      where: {
+        followingIds: {
+          has: userId,
+        },
+      },
+    });
+
     const followersCount = await prisma.user.count({
       where: {
         followingIds: {
@@ -30,7 +38,7 @@ export default async function handler(
       },
     });
 
-    return res.status(200).json({ ...existingUser, followersCount });
+    return res.status(200).json({ ...existingUser, followersCount, followers });
   } catch (err) {
     console.log(err);
     return res.status(400).end();
