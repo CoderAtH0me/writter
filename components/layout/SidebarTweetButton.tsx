@@ -3,14 +3,20 @@ import { useCallback } from "react";
 import { FaFeather } from "react-icons/fa";
 
 import useLoginModal from "@/hooks/useLoginModal";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 const SidebarTweetIcon = () => {
   const router = useRouter();
   const loginModal = useLoginModal();
+  const { data: currentUser } = useCurrentUser();
 
   const onClick = useCallback(() => {
-    loginModal.onOpen();
-  }, [loginModal]);
+    if (!currentUser) {
+      loginModal.onOpen();
+    } else {
+      router.push("/");
+    }
+  }, [loginModal, router, currentUser]);
 
   return (
     <div onClick={onClick}>
