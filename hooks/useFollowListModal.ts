@@ -2,14 +2,16 @@ import { create } from "zustand";
 
 interface FollowListModalStore {
   isOpen: boolean;
-  onOpen: () => void;
+  listType: "followers" | "following" | null;
+  onOpen: (listType: "followers" | "following") => void;
   onClose: () => void;
 }
 
 const useFollowListModal = create<FollowListModalStore>((set) => ({
   isOpen: false,
-  onOpen: () => set({ isOpen: true }),
-  onClose: () => set({ isOpen: false }),
+  listType: null,
+  onOpen: (listType) => set({ isOpen: true, listType }),
+  onClose: () => set({ isOpen: false, listType: null }),
 }));
 
 export default useFollowListModal;
