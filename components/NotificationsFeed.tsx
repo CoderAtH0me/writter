@@ -69,14 +69,8 @@ const NotificationsFeed = () => {
               <BsTwitter color="white" size={32} />
               <div className="text-white">
                 <span className="font-bold">{notification.actor.name}</span>
-                <span> @{notification.actor.username}</span>
-                <span>
-                  {notification.type === "follow"
-                    ? " followed you"
-                    : notification.type === "like"
-                    ? " liked your post"
-                    : " commented on your post"}
-                </span>
+                <span> @{notification.actor.username}</span>{" "}
+                <span>{notification.body}</span>
               </div>
             </div>
           </Link>
