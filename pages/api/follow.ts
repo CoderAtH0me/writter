@@ -40,6 +40,8 @@ export default async function handler(
           data: {
             body: "Someone followed you!",
             userId,
+            actorId: currentUser.id,
+            type: "follow",
           },
         });
 

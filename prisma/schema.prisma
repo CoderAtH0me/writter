@@ -29,6 +29,7 @@ model User {
   posts Post[]
   comments Comment[]
   notifications Notification[]
+  actedNotifications Notification[] @relation("Actor")
 }
 
 model Post {
@@ -42,6 +43,7 @@ model Post {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   comments Comment[]
+  notifications Notification[]
 }
 
 model Comment {
@@ -60,10 +62,16 @@ model Notification {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   body String
   userId String @db.ObjectId
+  actorId String? @db.ObjectId
+  type String
+  postId String? @db.ObjectId
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  actor User? @relation("Actor", fields: [actorId], references: [id], onDelete: Cascade)
+  post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
+
 
 
 

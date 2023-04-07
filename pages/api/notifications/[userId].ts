@@ -24,6 +24,10 @@ export default async function handler(
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        actor: true, // Include actor information
+        post: true, // Include post information
+      },
     });
 
     await prisma.user.update({
