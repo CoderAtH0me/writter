@@ -7,12 +7,13 @@ import Avatar from "../Avatar";
 
 interface ConversationsProps {
   onUserSelect: (userId: string) => void;
-  className?: string;
+  show: boolean;
 }
 
 const Conversations: React.FC<ConversationsProps> = ({
   onUserSelect,
-  className,
+
+  show,
 }) => {
   const {
     data: conversations,
@@ -51,7 +52,17 @@ const Conversations: React.FC<ConversationsProps> = ({
   }
 
   return (
-    <div className={`p-2 ${className}`}>
+    <div
+      className={`
+      pt-2
+      pb-2
+      pl-2 
+      transform 
+      transition-all 
+      duration-300 
+      ease-in-out
+      ${show ? "translate-x-0" : "-translate-x-full absolute z-2"}`}
+    >
       <div className="bg-neutral-900 rounded-md">
         <div className="border-b-[1px] border-neutral-800">
           <h2 className="text-white text-xl font-semibold p-4">Chats</h2>

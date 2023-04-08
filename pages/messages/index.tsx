@@ -32,16 +32,25 @@ const Messages = () => {
     (router.query.selectedUser as string | null) || null
   );
 
+  const [showConversations, setShowConversations] = useState<boolean>(true);
+
   return (
     <>
       <Header label="Messages" showBackArrow />
-      <div className="flex flex-row space-between">
+      <div className="flex flex-row space-between relative">
         <div>
-          <Conversations onUserSelect={setSelectedUserId} />
+          <Conversations
+            onUserSelect={setSelectedUserId}
+            show={showConversations}
+          />
         </div>
         <div className="w-full">
           {selectedUserId ? (
-            <ChatWindow userId={selectedUserId} />
+            <ChatWindow
+              userId={selectedUserId}
+              showConversations={showConversations}
+              setShowConversations={setShowConversations}
+            />
           ) : (
             <div
               className="

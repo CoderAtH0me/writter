@@ -9,6 +9,7 @@ interface ButtonProps {
   disabled?: boolean;
   outline?: boolean;
   notRounded?: boolean;
+  transform?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -20,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   outline,
   notRounded,
+  transform,
 }) => {
   return (
     <button
@@ -32,7 +34,7 @@ const Button: React.FC<ButtonProps> = ({
         hover:opacity-80
         transition
         border-2
-        
+        ${transform ? "" : "transition-transform duration-300 ease-in-out"}
         ${notRounded ? "rounded-md" : "rounded-full"}
         ${fullWidth ? "w-full" : "w-fit"}
         ${secondary ? "bg-white" : "bg-sky-500"}
