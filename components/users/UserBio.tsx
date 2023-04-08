@@ -1,6 +1,9 @@
+import axios from "axios";
 import { useMemo } from "react";
+import { useRouter } from "next/router";
 import { format } from "date-fns";
 import { BiCalendar } from "react-icons/bi";
+import { GrMail } from "react-icons/gr";
 
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useUser from "@/hooks/useUser";
@@ -18,10 +21,23 @@ const UserBio: React.FC<UserBioProps> = ({ userId }) => {
   const { data: currentUser } = useCurrentUser();
   const { data: fetchedUser } = useUser(userId);
 
+  const router = useRouter();
+
   const editModal = useEditModal();
   const followersModal = useFollowListModal();
 
   const { isFollowing, toggleFollow } = useFollow(userId);
+
+  const createConversationAndNavigate = async () => {
+    if (currentUser) {
+      try {
+        await axios.put(`/api/messages/${fetchedUser?.id}`);
+        router.push(`/messages?selectedUser=${fetchedUser?.id}`);
+      } catch (error) {
+        console.error("Error creating or finding conversation:", error);
+      }
+    }
+  };
 
   const createdAt = useMemo(() => {
     if (!fetchedUser?.createdAt) {
@@ -33,7 +49,14 @@ const UserBio: React.FC<UserBioProps> = ({ userId }) => {
 
   return (
     <div className="border-b-[1px] border-neutral-800 pb-4">
-      <div className="flex justify-end p-2">
+      <div className="flex justify-end gap-2 p-2">
+        {currentUser?.id !== userId && (
+          <Button
+            onClick={createConversationAndNavigate}
+            label={<GrMail size={25} />}
+            secondary
+          />
+        )}
         {currentUser?.id === userId ? (
           <Button secondary label="Edit" onClick={editModal.onOpen} />
         ) : (

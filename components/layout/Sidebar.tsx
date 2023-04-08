@@ -2,6 +2,7 @@ import { signOut } from "next-auth/react";
 import { BiLogOut } from "react-icons/bi";
 import { BsHouseFill, BsBellFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
+import { GrMail } from "react-icons/gr";
 
 import useCurrentUser from "@/hooks/useCurrentUser";
 
@@ -24,6 +25,12 @@ const Sidebar = () => {
       icon: BsBellFill,
       auth: true,
       alert: currentUser?.hasNotification,
+    },
+    {
+      label: "Messages",
+      href: "/messages",
+      icon: GrMail,
+      auth: true,
     },
     {
       label: "Profile",

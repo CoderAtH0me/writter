@@ -8,21 +8,29 @@ interface AvatarProps {
   userId: string;
   isLarge?: boolean;
   hasBorder?: boolean;
+  useDefaultClick?: boolean;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ userId, isLarge, hasBorder }) => {
+const Avatar: React.FC<AvatarProps> = ({
+  userId,
+  isLarge,
+  hasBorder,
+  useDefaultClick = true,
+}) => {
   const { data: fetchedUser } = useUser(userId);
   const router = useRouter();
 
   const onClick = useCallback(
     (event: any) => {
+      if (!useDefaultClick) return;
+
       event.stopPropagation();
 
       const url = `/users/${userId}`;
 
       router.push(url);
     },
-    [router, userId]
+    [router, userId, useDefaultClick]
   );
 
   return (

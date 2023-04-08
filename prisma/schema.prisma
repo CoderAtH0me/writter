@@ -30,6 +30,9 @@ model User {
   comments Comment[]
   notifications Notification[]
   actedNotifications Notification[] @relation("Actor")
+
+  sentPrivateMessages     PrivateMessage[] @relation("PrivateMessageSender")
+  receivedPrivateMessages PrivateMessage[] @relation("PrivateMessageRecipient")
 }
 
 model Post {
@@ -70,6 +73,16 @@ model Notification {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   actor User? @relation("Actor", fields: [actorId], references: [id], onDelete: Cascade)
   post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model PrivateMessage {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  content String
+  createdAt DateTime @default(now())
+  senderId String @db.ObjectId
+  sender User @relation("PrivateMessageSender", fields: [senderId], references: [id])
+  recipientId String @db.ObjectId
+  recipient User @relation("PrivateMessageRecipient", fields: [recipientId], references: [id])
 }
 
 

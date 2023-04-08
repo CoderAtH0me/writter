@@ -1,11 +1,14 @@
+import React, { ReactNode } from "react";
+
 interface ButtonProps {
-  label: string;
+  label: ReactNode;
   secondary?: boolean;
   fullWidth?: boolean;
   large?: boolean;
   onClick: () => void;
   disabled?: boolean;
   outline?: boolean;
+  notRounded?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,6 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   disabled,
   outline,
+  notRounded,
 }) => {
   return (
     <button
@@ -24,11 +28,12 @@ const Button: React.FC<ButtonProps> = ({
       className={`
         disabled:opacity-70
         disabled:cursor-not-allowed
-        rounded-full
         font-semibold
         hover:opacity-80
         transition
         border-2
+        
+        ${notRounded ? "rounded-md" : "rounded-full"}
         ${fullWidth ? "w-full" : "w-fit"}
         ${secondary ? "bg-white" : "bg-sky-500"}
         ${secondary ? "text-black" : "text-white"}
