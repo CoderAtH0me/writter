@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import useConversations from "@/hooks/useConversations";
@@ -14,7 +14,12 @@ const Conversations: React.FC<ConversationsProps> = ({
   onUserSelect,
   className,
 }) => {
-  const { data: conversations, isLoading, isError } = useConversations();
+  const {
+    data: conversations,
+    isLoading,
+    isError,
+    mutate,
+  } = useConversations();
 
   const router = useRouter();
   const selectedUser = router.query.selectedUser as string;
@@ -25,6 +30,13 @@ const Conversations: React.FC<ConversationsProps> = ({
     onUserSelect(userId);
     setActiveConversation(userId);
   };
+
+  useEffect(() => {
+    if (selectedUser) {
+      setActiveConversation(selectedUser);
+      mutate();
+    }
+  }, [selectedUser, mutate]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -50,9 +62,16 @@ const Conversations: React.FC<ConversationsProps> = ({
             return (
               <div
                 key={user.id}
-                className={`flex flex-col md:flex-row items-center gap-2 md:gap-4 cursor-pointer p-3 md:p-6 border-b-[1px] border-neutral-800 ${
-                  isActive ? "bg-neutral-700" : "hover:bg-neutral-800"
-                }`}
+                className={`flex 
+                flex-col 
+                md:flex-row 
+                items-center 
+                gap-2 md:gap-4 
+                cursor-pointer 
+                p-3 md:p-6 
+                border-b-[1px] 
+                border-neutral-800 
+                ${isActive ? "bg-neutral-700" : "hover:bg-neutral-800"}`}
                 onClick={() => handleUserSelect(user.id)}
                 style={{
                   borderTopLeftRadius: 0,

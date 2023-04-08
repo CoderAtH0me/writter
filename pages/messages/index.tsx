@@ -45,7 +45,7 @@ const Messages = () => {
           ) : (
             <div
               className="
-            bg-neutral-800
+            bg-neutral-900
             rounded-md
             mt-2
             mb-4

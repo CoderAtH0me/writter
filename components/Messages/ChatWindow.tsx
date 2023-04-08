@@ -40,11 +40,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
   }, [message, userId, mutateMessages]);
 
   return (
-    <div className="bg-neutral-800 rounded-md mt-2 mb-2 mr-2">
-      <h2 className="text-white text-xl font-semibold border-b-[1px] border-neutral-700 p-4 px-4">
+    <div className="bg-neutral-900 rounded-md mt-2 mb-2 mr-2">
+      <h2 className="text-white text-xl font-semibold border-b-[1px] border-neutral-800 p-4 px-4">
         Chat Window
       </h2>
-      <div className="px-4 mt-4 flex-grow overflow-y-auto border-b-[1px] border-neutral-700">
+      <div className="px-4 mt-4 flex-grow overflow-y-auto border-b-[1px] border-neutral-800">
         {messages
           .filter(
             (message: Record<string, any>) => message.content.trim() !== ""
@@ -68,8 +68,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ userId }) => {
                   <div
                     className={`p-2 rounded-md ${
                       isOwnMessage
-                        ? "bg-blue-600 text-white"
-                        : "bg-neutral-700 text-white"
+                        ? "bg-neutral-700 text-white"
+                        : "bg-neutral-800 text-white"
                     }`}
                   >
                     <p className="text-sm">{message.content}</p>
