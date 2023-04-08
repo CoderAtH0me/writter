@@ -61,7 +61,8 @@ const Conversations: React.FC<ConversationsProps> = ({
       transition-all 
       duration-300 
       ease-in-out
-      ${show ? "translate-x-0" : "-translate-x-full absolute z-2"}`}
+      ${show ? "translate-x-0" : "-translate-x-full absolute z-2"}
+      `}
     >
       <div className="bg-neutral-900 rounded-md">
         <div className="border-b-[1px] border-neutral-800">

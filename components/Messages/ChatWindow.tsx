@@ -29,7 +29,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 }) => {
   const { data: currentUser } = useCurrentUser();
 
-  const { data: user } = useUser(userId);
+  const { data: user, isLoading: isLoadingUser } = useUser(userId);
 
   const { data: messages = [], mutate: mutateMessages } = useMessages(userId);
 
@@ -57,11 +57,18 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   }, [message, userId, mutateMessages]);
 
   return (
-    <div className="bg-neutral-900 rounded-md m-2">
+    <div
+      className={`
+        bg-neutral-900 
+        rounded-md 
+        m-2
+        w-full
+        `}
+    >
       <h2 className="text-white text-xl border-b-[1px] border-neutral-800 p-2 md:p-4">
-        {user ? (
+        {!isLoadingUser && user ? (
           <>
-            <div className="flex flex-row gap-2 space-between items-center">
+            <div className="flex flex-row gap-2 justify-between items-center">
               <Button
                 onClick={() => setShowConversations(!showConversations)}
                 label={
@@ -71,6 +78,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                     <BsArrowRightShort />
                   )
                 }
+                noBorder
+                outline
                 notRounded={true}
                 transform={true}
               />
