@@ -28,6 +28,9 @@ export default async function handler(
     const { currentUser } = await serverAuth(req);
 
     const validUserId = userId as string;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const offset = (page - 1) * limit;
 
     const conversation = await prisma.privateMessage.findMany({
       where: {
@@ -37,11 +40,14 @@ export default async function handler(
         ],
       },
       orderBy: {
-        createdAt: "asc",
+        createdAt: "desc",
       },
+      skip: offset,
+      take: limit,
     });
 
-    res.status(200).json(conversation);
+    // Reverse the order of messages to maintain the original order
+    res.status(200).json(conversation.reverse());
   } else if (req.method === "PUT") {
     const { userId } = req.query;
     const { currentUser } = await serverAuth(req);

@@ -1,19 +1,18 @@
 import axios from "axios";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { toast } from "react-hot-toast";
 
+import { BsFillSendFill } from "react-icons/bs";
 import {
-  BsArrowLeftShort,
-  BsArrowRightShort,
-  BsFillSendFill,
-} from "react-icons/bs";
+  MdOutlineArrowBackIosNew,
+  MdOutlineArrowForwardIos,
+} from "react-icons/md";
 
 import useUser from "@/hooks/useUser";
 import useMessages from "@/hooks/useMessages";
 import useCurrentUser from "@/hooks/useCurrentUser";
 
 import Avatar from "../Avatar";
-import Input from "../Input";
 import Button from "../Button";
 
 interface ChatWindowProps {
@@ -31,10 +30,21 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const { data: user, isLoading: isLoadingUser } = useUser(userId);
 
-  const { data: messages = [], mutate: mutateMessages } = useMessages(userId);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(20);
+  const { data: messages = [], mutate: mutateMessages } = useMessages(
+    userId,
+    page,
+    limit
+  );
 
   const [message, setMessage] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   const sendMessage = useCallback(async () => {
     try {
@@ -49,12 +59,37 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
       setMessage("");
       setIsLoading(false);
-      mutateMessages(); // Update the messages after sending a new one
+      mutateMessages();
     } catch (err) {
       toast.error("Error sending message");
       setIsLoading(false);
     }
   }, [message, userId, mutateMessages]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const { scrollTop, scrollHeight, clientHeight } = target;
+    const scrollThreshold = 100; // You can adjust this value as needed
+
+    if (
+      scrollTop <= scrollThreshold &&
+      scrollHeight > clientHeight &&
+      !isFetchingMore
+    ) {
+      setIsFetchingMore(true);
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (showConversations && messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView();
+    }
+
+    if (page > 1) {
+      setIsFetchingMore(false);
+    }
+  }, [messages, showConversations, page]);
 
   return (
     <div
@@ -63,6 +98,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         rounded-md 
         m-2
         w-full
+        flex
+        flex-col
+        justify-between
+        
         `}
     >
       <h2 className="text-white text-xl border-b-[1px] border-neutral-800 p-2 md:p-4">
@@ -73,9 +112,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 onClick={() => setShowConversations(!showConversations)}
                 label={
                   showConversations ? (
-                    <BsArrowLeftShort />
+                    <MdOutlineArrowBackIosNew />
                   ) : (
-                    <BsArrowRightShort />
+                    <MdOutlineArrowForwardIos />
                   )
                 }
                 noBorder
@@ -91,7 +130,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           "Chat Window"
         )}
       </h2>
-      <div className="px-4 mt-4 flex-grow overflow-y-auto border-b-[1px] border-neutral-800">
+      <div
+        onScroll={handleScroll}
+        ref={scrollContainerRef}
+        className="px-4 py-[1px] flex-grow overflow-y-auto border-b-[1px] border-neutral-800 scrollbar"
+      >
         {messages
           .filter(
             (message: Record<string, any>) => message.content.trim() !== ""
@@ -113,7 +156,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   }`}
                 >
                   <div
-                    className={`p-2 rounded-md ${
+                    className={`px-3 py-2 rounded-full ${
                       isOwnMessage
                         ? "bg-neutral-700 text-white"
                         : "bg-neutral-800 text-white"
@@ -125,30 +168,47 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               </div>
             );
           })}
+        <div ref={messagesEndRef} />
       </div>
       <div
         className="
-              mt-1 md:mt-4 
               flex 
               flex-row 
-              gap-1 md:gap-4
+              gap-2 md:gap-3
               items-center 
-              px-1 md:px-4 
-              pb-1 md:pb-4
+              p-2 md:p-3
               "
       >
-        <Input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type your message..."
+        <textarea
           disabled={isLoading}
-        />
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}
+          onClick={() =>
+            showConversations && setShowConversations(!showConversations)
+          }
+          className="
+            custom-textarea
+            pl-6
+            py-1
+            peer
+            resize-none
+            w-full
+            bg-neutral-800
+            ring-0
+            outline-none
+            text-[20px]
+            placeholder-neutral-500
+            text-white
+            rounded-full
+            overflow-hide
+          "
+          placeholder="Type your message..."
+        ></textarea>
         <Button
           onClick={sendMessage}
           disabled={message.trim().length === 0 || isLoading}
           label={<BsFillSendFill />}
-          notRounded={true}
+          notRounded={false}
           large
         />
       </div>

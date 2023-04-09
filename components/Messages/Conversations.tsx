@@ -61,12 +61,16 @@ const Conversations: React.FC<ConversationsProps> = ({
       transition-all 
       duration-300 
       ease-in-out
-      ${show ? "translate-x-0" : "-translate-x-full absolute z-2"}
+      scrollbar
+      overflow-y-auto
+      overflow-x-hidden
+      
+      ${show ? "translate-x-0" : "-translate-x-full relative z-2"}
       `}
     >
-      <div className="bg-neutral-900 rounded-md">
+      <div className="bg-neutral-900 h-[70vh] rounded-md">
         <div className="border-b-[1px] border-neutral-800">
-          <h2 className="text-white text-xl font-semibold p-4">Chats</h2>
+          <h2 className="text-white text-xl font-semibold p-7">Chats</h2>
         </div>
         <div className="flex flex-col">
           {conversations.map((user: Record<string, any>, index: number) => {
@@ -74,7 +78,8 @@ const Conversations: React.FC<ConversationsProps> = ({
             return (
               <div
                 key={user.id}
-                className={`flex 
+                className={`
+                flex 
                 flex-col 
                 md:flex-row 
                 items-center 
@@ -83,6 +88,7 @@ const Conversations: React.FC<ConversationsProps> = ({
                 p-3 md:p-6 
                 border-b-[1px] 
                 border-neutral-800 
+                h-[20%] 
                 ${isActive ? "bg-neutral-700" : "hover:bg-neutral-800"}`}
                 onClick={() => handleUserSelect(user.id)}
                 style={{

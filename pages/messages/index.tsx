@@ -37,7 +37,7 @@ const Messages = () => {
   return (
     <>
       <Header label="Messages" showBackArrow />
-      <div className="flex flex-row space-between relative">
+      <div className="flex flex-row justify-between relative h-[72vh]">
         <div
           className={`
             transition-all
@@ -45,8 +45,7 @@ const Messages = () => {
             ease-in-out
             flex
             ${showConversations ? "w-1/3" : "w-0"}
-            overflow-hidden
-          `}
+            `}
         >
           <Conversations
             onUserSelect={setSelectedUserId}
@@ -59,7 +58,8 @@ const Messages = () => {
             duration-300 
             ease-in-out
             flex
-            ${showConversations ? "w-2/3" : "w-full"}
+            w-full
+            
           `}
         >
           {selectedUserId ? (
@@ -74,10 +74,12 @@ const Messages = () => {
             bg-neutral-900
             rounded-md
             m-2
+            p-4
             flex
-            items-center
+            flex-col
+            w-full
             justify-center
-            min-h-full
+            items-center
             "
             >
               <h2 className="text-neutral-600 text-xl font-semibold">

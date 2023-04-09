@@ -9,3 +9,26 @@
 body {
   @apply h-full bg-black;
 }
+
+/* Define the custom scrollbar style */
+.scrollbar::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: #222222;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #302f2f;
+  border-radius: 9999px;
+}
+
+.scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #3c3c3c;
+}
+
+.custom-textarea::placeholder {
+  text-align: center;
+}
