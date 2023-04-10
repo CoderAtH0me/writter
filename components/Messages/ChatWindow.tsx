@@ -89,7 +89,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     if (page > 1) {
       setIsFetchingMore(false);
     }
-  }, [messages, showConversations, page]);
+  }, [messages, page]);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const { scrollHeight, clientHeight } = scrollContainerRef.current;
+      const newScrollTop = showConversations ? 0 : scrollHeight - clientHeight;
+
+      scrollContainerRef.current.scrollTop = newScrollTop;
+    }
+  }, [showConversations]);
 
   return (
     <div
