@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { toast } from "react-hot-toast";
 
 import { BsFillSendFill } from "react-icons/bs";
@@ -30,21 +30,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const { data: user, isLoading: isLoadingUser } = useUser(userId);
 
-  const [page, setPage] = useState(1);
-  const [limit] = useState(20);
-  const { data: messages = [], mutate: mutateMessages } = useMessages(
-    userId,
-    page,
-    limit
-  );
+  const { data: messages = [], mutate: mutateMessages } = useMessages(userId);
 
   const [message, setMessage] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
   const [isLoading, setIsLoading] = useState(false);
-
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   const sendMessage = useCallback(async () => {
     try {
@@ -59,43 +48,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
       setMessage("");
       setIsLoading(false);
-      mutateMessages();
+      mutateMessages(); // Update the messages after sending a new one
     } catch (err) {
       toast.error("Error sending message");
       setIsLoading(false);
     }
   }, [message, userId, mutateMessages]);
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement;
-    const { scrollTop, scrollHeight, clientHeight } = target;
-    const scrollThreshold = 100; // You can adjust this value as needed
-
-    if (
-      scrollTop <= scrollThreshold &&
-      scrollHeight > clientHeight &&
-      !isFetchingMore
-    ) {
-      setIsFetchingMore(true);
-      setPage((prevPage) => prevPage + 1);
-    }
-  };
-
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView();
-    }
-
-    if (page > 1) {
-      setIsFetchingMore(false);
-    }
-  }, [messages, page]);
-
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
 
   return (
     <div
@@ -136,11 +94,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           "Chat Window"
         )}
       </h2>
-      <div
-        onScroll={handleScroll}
-        ref={scrollContainerRef}
-        className="px-4 py-[1px] flex-grow overflow-y-auto border-b-[1px] border-neutral-800 scrollbar"
-      >
+      <div className="px-4 py-[1px] flex-grow overflow-y-auto border-b-[1px] border-neutral-800 scrollbar">
         {messages
           .filter(
             (message: Record<string, any>) => message.content.trim() !== ""
@@ -174,7 +128,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               </div>
             );
           })}
-        <div ref={messagesEndRef} />
       </div>
       <div
         className="
@@ -206,7 +159,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             placeholder-neutral-500
             text-white
             rounded-full
-            overflow-hide
           "
           placeholder="Type your message..."
         ></textarea>
