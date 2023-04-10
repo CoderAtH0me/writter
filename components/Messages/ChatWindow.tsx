@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { toast } from "react-hot-toast";
 
 import { BsFillSendFill } from "react-icons/bs";
@@ -32,6 +32,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const { data: messages = [], mutate: mutateMessages } = useMessages(userId);
 
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,11 +51,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       setMessage("");
       setIsLoading(false);
       mutateMessages(); // Update the messages after sending a new one
+
+      // Scroll to the latest message after the message is sent
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     } catch (err) {
       toast.error("Error sending message");
       setIsLoading(false);
     }
   }, [message, userId, mutateMessages]);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView();
+    }
+  }, [messages]);
 
   return (
     <div
@@ -128,6 +141,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               </div>
             );
           })}
+        <div ref={messagesEndRef} />
       </div>
       <div
         className="
