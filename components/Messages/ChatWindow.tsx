@@ -82,7 +82,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   };
 
   useEffect(() => {
-    if (showConversations && messagesEndRef.current) {
+    if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView();
     }
 
@@ -90,6 +90,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       setIsFetchingMore(false);
     }
   }, [messages, page]);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <div
