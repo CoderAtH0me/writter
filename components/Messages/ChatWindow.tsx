@@ -31,7 +31,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const { data: user, isLoading: isLoadingUser } = useUser(userId);
 
   const { data: messages = [], mutate: mutateMessages } = useMessages(userId);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
