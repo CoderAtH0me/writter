@@ -22,7 +22,8 @@ const SidebarTweetIcon = () => {
     <div onClick={onClick}>
       <div
         className="
-            mt-6
+            my-1
+            md:mt-6
             lg:hidden
             rounded-full
             h-14
@@ -55,13 +56,13 @@ const SidebarTweetIcon = () => {
       >
         <p
           className="
-        hidden
-        lg:block
-        text-center
-        font-semibold
-        text-white
-        text-[20px]
-        "
+            hidden
+            lg:block
+            text-center
+            font-semibold
+            text-white
+            text-[20px]
+            "
         >
           Tweet
         </p>

@@ -41,30 +41,59 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className=" bg-black col-span-1 h-full pr-4 md:pr-6 relative z-10">
-      <div className="flex flex-col items-end">
-        <div className="space-y-2 w-16 lg:w-[230px]">
+    <div
+      className="
+          fixed
+          md:relative
+          bottom-0
+          inset-x-0
+          bg-black 
+          order-last 
+          md:order-first 
+          h-fit
+          md:h-full 
+          md:w-auto 
+          px-4 
+          md:px-3 
+          z-10"
+    >
+      {/* <div className="flex flex-col items-end"> */}
+      <div
+        className="
+                flex 
+                flex-row 
+                md:flex-col 
+                justify-around 
+
+                space-y-1 
+                md:space-y-2 
+                w-full 
+                md:w-fit
+                "
+      >
+        <div className="hidden md:flex">
           <SidebarLogo />
-          {items.map((item) => (
-            <SidebarItem
-              key={item.href}
-              href={item.href}
-              label={item.label}
-              icon={item.icon}
-              auth={item.auth}
-              alert={item.alert}
-            />
-          ))}
-          {currentUser && (
-            <SidebarItem
-              onClick={() => signOut()}
-              icon={BiLogOut}
-              label="Logout"
-            />
-          )}
-          <SidebarTweetButton />
         </div>
+        {items.map((item) => (
+          <SidebarItem
+            key={item.href}
+            href={item.href}
+            label={item.label}
+            icon={item.icon}
+            auth={item.auth}
+            alert={item.alert}
+          />
+        ))}
+        {currentUser && (
+          <SidebarItem
+            onClick={() => signOut()}
+            icon={BiLogOut}
+            label="Logout"
+          />
+        )}
+        <SidebarTweetButton />
       </div>
+      {/* </div> */}
     </div>
   );
 };

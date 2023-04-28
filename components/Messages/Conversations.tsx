@@ -65,7 +65,7 @@ const Conversations: React.FC<ConversationsProps> = ({
       overflow-y-auto
       overflow-x-hidden
       
-      ${show ? "translate-x-0" : "-translate-x-full relative z-2"}
+      ${show ? "translate-x-0" : "-translate-x-full hidden relative z-2"}
       `}
     >
       <div className="bg-neutral-900 h-[70vh] rounded-md">

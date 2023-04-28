@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { BiArrowBack } from "react-icons/bi";
 
+import SidebarLogo from "./layout/SidebarLogo";
+
 interface HeaderProps {
   label: string;
   showBackArrow?: boolean;
@@ -16,6 +18,9 @@ const Header: React.FC<HeaderProps> = ({ label, showBackArrow }) => {
   return (
     <div className="border-b-[1px] border-neutral-800 p-5">
       <div className="flex flex-row items-center gap-2">
+        <div className="flex md:hidden">
+          <SidebarLogo />
+        </div>
         {showBackArrow && (
           <BiArrowBack
             onClick={handleBack}
