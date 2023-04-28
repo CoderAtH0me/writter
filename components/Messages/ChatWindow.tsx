@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
 
 import { BsFillSendFill } from "react-icons/bs";
@@ -31,6 +31,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const { data: user, isLoading: isLoadingUser } = useUser(userId);
 
   const { data: messages = [], mutate: mutateMessages } = useMessages(userId);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -94,7 +95,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                     <MdOutlineArrowForwardIos />
                   )
                 }
-                noBorder
+                noBorder={true}
                 outline
                 notRounded={true}
                 transform={true}
@@ -147,9 +148,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         className="
               flex 
               flex-row 
-              gap-2 md:gap-3
-              items-center 
-              p-2 md:p-3
+
+              
               "
       >
         <textarea
@@ -160,29 +160,40 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             showConversations && setShowConversations(!showConversations)
           }
           className="
-            custom-textarea
-            pl-6
-            py-1
+            mx-3 md:mx-6
+            my-1 md:my-3
             peer
             resize-none
             w-full
-            bg-neutral-800
+            bg-neutral-900
             ring-0
             outline-none
             text-[20px]
             placeholder-neutral-500
             text-white
-            rounded-full
+            scrollbar
           "
           placeholder="Type your message..."
         ></textarea>
-        <Button
-          onClick={sendMessage}
-          disabled={message.trim().length === 0 || isLoading}
-          label={<BsFillSendFill />}
-          notRounded={false}
-          large
-        />
+        <div
+          className="
+        px-4 
+        flex 
+        flex-row 
+        justify-center 
+        items-center
+        border-l-[1px]
+        border-neutral-800
+        "
+        >
+          <Button
+            onClick={sendMessage}
+            disabled={message.trim().length === 0 || isLoading}
+            label={<BsFillSendFill />}
+            notRounded={false}
+            large
+          />
+        </div>
       </div>
     </div>
   );
