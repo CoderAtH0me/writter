@@ -100,7 +100,9 @@ const Conversations: React.FC<ConversationsProps> = ({
                     index === conversations.length - 1 ? "0.375rem" : 0,
                 }}
               >
-                <Avatar userId={user.id} useDefaultClick={false} />
+                <div>
+                  <Avatar userId={user.id} useDefaultClick={false} />
+                </div>
                 <div className="text-white">
                   <p className="font-semibold text-sm">{user.name}</p>
                   <p className="text-neutral-400 text-sm hidden md:block">
