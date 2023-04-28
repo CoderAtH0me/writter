@@ -53,7 +53,9 @@ const FollowListModal: React.FC<FollowListModalProps> = ({
               cursor-pointer
               "
             >
-              <Avatar userId={user.id} />
+              <div>
+                <Avatar userId={user.id} />
+              </div>
               <div className="flex flex-col">
                 <p
                   className="

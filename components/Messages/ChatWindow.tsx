@@ -100,7 +100,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 transform={true}
               />
               {user.name}
-              <Avatar userId={userId} />
+              <div>
+                <Avatar userId={userId} />
+              </div>
             </div>
           </>
         ) : (
